@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rezau_mehedi.prayerreminder.core.Constants.DIVISIONS
 import com.rezau_mehedi.prayerreminder.data.UserPref
+import com.rezau_mehedi.prayerreminder.model.PrayerTimeUIEvent
 
 import com.rezau_mehedi.prayerreminder.model.SignUpUIEvent
 import com.rezau_mehedi.prayerreminder.model.UserModel
@@ -41,25 +42,54 @@ class PreferenceViewModel @Inject constructor(
     )
 
 
-    fun onEvent(event: SignUpUIEvent) {
+    private val _navigationState = MutableStateFlow(false)
+    val navigationState = _navigationState.asStateFlow()
+
+
+    private val _locationDialogState = MutableStateFlow(false)
+    val locationDialogState = _locationDialogState.asStateFlow()
+
+
+    fun onSignUpUIEvent(event: SignUpUIEvent) {
         when(event) {
             is SignUpUIEvent.LocationChanged -> {
                 _location.update { event.location }
             }
             is SignUpUIEvent.PhoneNoChanged -> {
+                validateAllStates()
                 _phoneNo.update { event.phoneNo }
             }
             SignUpUIEvent.SignUpButtonClicked -> {
-                if (validateAllStates()) {
-                    saveUser(UserModel(phoneNo = phoneNo.value, location = location.value))
-                }
+                saveUser(UserModel(phoneNo = phoneNo.value, location = location.value))
+
+            }
+        }
+    }
+
+
+    fun onPrayerTimeUIEvent(event: PrayerTimeUIEvent) {
+        when (event) {
+            PrayerTimeUIEvent.ChangeButtonClicked -> {
+                _location.update { user.value.location }
+                _locationDialogState.update { true }
+            }
+            PrayerTimeUIEvent.ConfirmButtonClicked -> {
+                updateLocation()
+            }
+            is PrayerTimeUIEvent.LocationChanged -> {
+                _location.update { event.location }
             }
         }
     }
 
 
     private fun saveUser(userModel: UserModel) = viewModelScope.launch(Dispatchers.IO) {
-            userPref.saveUserModel(userModel)
+            if (validateAllStates()) {
+                userPref.saveUserModel(userModel)
+                _navigationState.update { true }
+                _phoneNo.update { "" }
+                _location.update { "" }
+            }
     }
 
 
@@ -72,6 +102,24 @@ class PreferenceViewModel @Inject constructor(
         _error.update { phoneNoResult }
 
         return phoneNoResult == null
+    }
+
+
+    private fun updateLocation() = viewModelScope.launch {
+        userPref.saveUserModel(
+            UserModel(
+                phoneNo = user.value.phoneNo,
+                location = location.value
+            )
+        )
+
+        _location.update { "" }
+        _locationDialogState.update { false }
+    }
+
+
+    fun resetUser() = viewModelScope.launch {
+        userPref.saveUserModel(UserModel())
     }
 
     companion object {

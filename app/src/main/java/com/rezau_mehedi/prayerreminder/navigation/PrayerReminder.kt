@@ -48,7 +48,16 @@ fun PrayerReminder(viewModel: PreferenceViewModel) {
         }
 
         composable(route = Routes.PRAYER_TIME_UI.name) {
-            PrayerTimeUI(viewModel = viewModel)
+            PrayerTimeUI(
+                viewModel = viewModel,
+                navigateToSignUpScreen = {
+                    navigate(
+                        navController,
+                        Routes.PRAYER_TIME_UI.name,
+                        Routes.SIGN_UP.name
+                    )
+                }
+            )
         }
     }
 

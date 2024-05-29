@@ -40,6 +40,7 @@ fun SignUp(
     val phoneNo = viewModel.phoneNo.collectAsState().value
     val location = viewModel.location.collectAsState().value
     val error = viewModel.error.collectAsState().value
+    val navigationState = viewModel.navigationState.collectAsState().value
 
     Column(
         modifier = Modifier
@@ -52,26 +53,28 @@ fun SignUp(
         Text(text = "Prayer Reminder", fontWeight = FontWeight.Thin, fontSize = 32.sp)
         Spacer(modifier = Modifier.height(24.dp))
 
-        OutlinedTextField(
-            value = phoneNo,
-            onValueChange = { phone ->
-                            viewModel.onEvent(SignUpUIEvent.PhoneNoChanged(phone))
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp, 0.dp),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Done
-            ),
-            label = { Text(text = "Phone Number") },
-            placeholder = { Text(text = "Enter your phone no") },
-            isError = error != null
-        )
-        
-        if (error != null) {
-            Spacer(modifier = Modifier.height(2.dp))
-            Text(text = error, color = Color.Red, fontSize = 10.sp)
+        Column(modifier = Modifier.fillMaxWidth()) {
+            OutlinedTextField(
+                value = phoneNo,
+                onValueChange = { phone ->
+                    viewModel.onSignUpUIEvent(SignUpUIEvent.PhoneNoChanged(phone))
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(0.dp),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Done
+                ),
+                label = { Text(text = "Phone Number") },
+                placeholder = { Text(text = "Enter your phone no") },
+                isError = error != null
+            )
+
+            if (error != null) {
+                Spacer(modifier = Modifier.height(2.dp))
+                Text(text = error, color = Color.Red, fontSize = 12.sp)
+            }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -85,13 +88,13 @@ fun SignUp(
                     RadioButton(
                         selected = location == division,
                         onClick = { 
-                            viewModel.onEvent(SignUpUIEvent.LocationChanged(division))
+                            viewModel.onSignUpUIEvent(SignUpUIEvent.LocationChanged(division))
                         }
                     )
                     Text(
                         text = division,
                         modifier = Modifier.clickable { 
-                            viewModel.onEvent(SignUpUIEvent.LocationChanged(division))
+                            viewModel.onSignUpUIEvent(SignUpUIEvent.LocationChanged(division))
                         })
                 }
             }
@@ -105,8 +108,8 @@ fun SignUp(
 
             Button(
                 onClick = {
-                    viewModel.onEvent(SignUpUIEvent.SignUpButtonClicked)
-                    if (error == null) {
+                    viewModel.onSignUpUIEvent(SignUpUIEvent.SignUpButtonClicked)
+                    if (navigationState) {
                         navigateToPrayerTimeUI()
                     }
 
