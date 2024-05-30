@@ -126,9 +126,6 @@ fun PrayerTimeUI(
 
 
     val today = LocalDateTime.now()
-//    val amOrPm = if (today.hour > 11) "PM" else "AM"
-
-//    Log.d("TAG", "PrayerTimeUI: sunrise: $sunrise, today: ${today.hour}:${today.minute}:$amOrPm, dhuhr: $dhuhr ")
 
 
     val now =
@@ -216,7 +213,7 @@ fun PrayerTimeUI(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(text = "Fajr", fontSize = 24.sp)
-                    Text(text = "$fajrHour:$fajrMinute $fajrShift", fontSize = 24.sp)
+                    Text(text = fajr, fontSize = 24.sp)
                 }
             }
             // Dhuhr
@@ -233,7 +230,7 @@ fun PrayerTimeUI(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(text = "Dhuhr", fontSize = 24.sp)
-                    Text(text = "$dhuhrHour:$dhuhrMinute $dhuhrShift", fontSize = 24.sp)
+                    Text(text = dhuhr, fontSize = 24.sp)
                 }
             }
 
@@ -251,7 +248,7 @@ fun PrayerTimeUI(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(text = "Asr", fontSize = 24.sp)
-                    Text(text = "$asrHour:$asrMinute $asrShift", fontSize = 24.sp)
+                    Text(text = asr, fontSize = 24.sp)
                 }
             }
 
@@ -269,7 +266,7 @@ fun PrayerTimeUI(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(text = "Maghrib", fontSize = 24.sp)
-                    Text(text = "$maghribHour:$maghribMinute $maghribShift", fontSize = 24.sp)
+                    Text(text = maghrib, fontSize = 24.sp)
                 }
             }
 
@@ -287,7 +284,7 @@ fun PrayerTimeUI(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(text = "Isha", fontSize = 24.sp)
-                    Text(text = "$ishaHour:$ishaMinute $ishaShift", fontSize = 24.sp)
+                    Text(text = isha, fontSize = 24.sp)
                 }
             }
         }
@@ -442,7 +439,7 @@ private fun TopCard(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f),
+                    .weight(0.8f),
             ) {
                 Text(
                     text = "${weekDay[0].uppercase()}${weekDay.substring(1)}, ${today.dayOfMonth} ${month[0].uppercase()}${

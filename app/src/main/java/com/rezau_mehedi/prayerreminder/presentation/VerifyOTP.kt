@@ -13,22 +13,27 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.rezau_mehedi.prayerreminder.model.SignUpUIEvent
 
 @Composable
-fun VerifyOTP() {
+fun VerifyOTP(
+    viewModel: PreferenceViewModel,
+    navigateToPrayerTimeUI: () -> Unit
+) {
 
-    val otp = rememberSaveable {
-        mutableStateOf("")
-    }
+    val otp = viewModel.otp.collectAsState().value
 
-    Column (
+    val navigationState = viewModel.navigationState.collectAsState().value
+
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 24.dp, vertical = 48.dp),
@@ -36,8 +41,10 @@ fun VerifyOTP() {
         verticalArrangement = Arrangement.Center
     ) {
         OutlinedTextField(
-            value = otp.value,
-            onValueChange = {otp.value = it },
+            value = otp,
+            onValueChange = { currentOTP ->
+                viewModel.onSignUpUIEvent(SignUpUIEvent.OTPChanged(currentOTP))
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp, 0.dp),
@@ -45,14 +52,32 @@ fun VerifyOTP() {
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Done
             ),
-            label = { Text(text = "OTP") },
-            placeholder = { Text(text = "* * * * * *") }
+            label = {
+                Text(
+                    text = "OTP",
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+            },
+            placeholder = {
+                Text(
+                    text = "* * * * * *",
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+            },
+            textStyle = TextStyle(textAlign = TextAlign.Center)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { /*TODO*/ },
+            onClick = {
+                viewModel.onSignUpUIEvent(SignUpUIEvent.SignUpButtonClicked)
+                if (navigationState) {
+                    navigateToPrayerTimeUI()
+                }
+            },
             shape = RoundedCornerShape(15)
         ) {
             Text(text = "Verify")

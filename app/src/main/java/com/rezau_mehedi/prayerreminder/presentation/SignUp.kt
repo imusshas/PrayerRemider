@@ -34,13 +34,12 @@ import com.rezau_mehedi.prayerreminder.model.SignUpUIEvent
 @Composable
 fun SignUp(
     viewModel: PreferenceViewModel,
-    navigateToPrayerTimeUI: () -> Unit
+    navigateVerifyOTP: () -> Unit
 ) {
 
     val phoneNo = viewModel.phoneNo.collectAsState().value
     val location = viewModel.location.collectAsState().value
     val error = viewModel.error.collectAsState().value
-    val navigationState = viewModel.navigationState.collectAsState().value
 
     Column(
         modifier = Modifier
@@ -107,14 +106,7 @@ fun SignUp(
         ) {
 
             Button(
-                onClick = {
-                    viewModel.onSignUpUIEvent(SignUpUIEvent.SignUpButtonClicked)
-                    if (navigationState) {
-                        navigateToPrayerTimeUI()
-                    }
-
-                    Log.d(APP_NAME, "SignUp: error: $error")
-                },
+                onClick = navigateVerifyOTP,
                 shape = RoundedCornerShape(15)
             ) {
                 Text(text = "Sign Up")

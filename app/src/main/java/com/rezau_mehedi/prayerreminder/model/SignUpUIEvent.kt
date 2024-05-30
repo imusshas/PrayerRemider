@@ -5,4 +5,6 @@ sealed class SignUpUIEvent {
     data class LocationChanged(val location: String): SignUpUIEvent()
 
     data object SignUpButtonClicked: SignUpUIEvent()
+
+    data class OTPChanged(val otp: String): SignUpUIEvent()
 }

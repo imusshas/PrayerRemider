@@ -35,6 +35,12 @@ class PreferenceViewModel @Inject constructor(
     private val _error = MutableStateFlow<String?>(null)
     val error = _error.asStateFlow()
 
+    private val _otp = MutableStateFlow("")
+    val otp = _otp.asStateFlow()
+
+    private val _otpError = MutableStateFlow<String?>(null)
+    val otpError = _otpError.asStateFlow()
+
     val user: StateFlow<UserModel> = userPref.getUserModel().stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(),
@@ -61,7 +67,10 @@ class PreferenceViewModel @Inject constructor(
             }
             SignUpUIEvent.SignUpButtonClicked -> {
                 saveUser(UserModel(phoneNo = phoneNo.value, location = location.value))
+            }
 
+            is SignUpUIEvent.OTPChanged -> {
+                _otp.update { event.otp }
             }
         }
     }

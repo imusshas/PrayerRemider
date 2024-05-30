@@ -33,18 +33,27 @@ fun PrayerReminder(viewModel: PreferenceViewModel) {
         ) {
             SignUp(
                 viewModel = viewModel,
-                navigateToPrayerTimeUI = {
+                navigateVerifyOTP = {
                     navigate(
                         navController,
                         Routes.SIGN_UP.name,
-                        Routes.PRAYER_TIME_UI.name
+                        Routes.VERIFY_OTP.name
                     )
                 }
             )
         }
 
         composable(route = Routes.VERIFY_OTP.name) {
-            VerifyOTP()
+            VerifyOTP(
+                viewModel = viewModel,
+                navigateToPrayerTimeUI = {
+                    navigate(
+                        navController,
+                        Routes.VERIFY_OTP.name,
+                        Routes.PRAYER_TIME_UI.name
+                        )
+                }
+            )
         }
 
         composable(route = Routes.PRAYER_TIME_UI.name) {
