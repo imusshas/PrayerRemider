@@ -19,11 +19,7 @@ object Constants {
         90.4125, 91.7832, 89.5403, 88.6042, 91.8611, 90.3535, 89.2752, 90.4203, 90.4125
     )
 
-    private const val DATASTORE_NAME = "USER"
-
-    val Context.datastore: DataStore<Preferences> by preferencesDataStore(name = DATASTORE_NAME)
-
-    const val BASE_URL = "http://20.197.50.116:3000/"  // TODO(): Change the port no
+    const val BASE_URL = "http://20.197.50.116:3000/"
     const val REFERENCE_NO = "referenceNo"
     const val OTP = "otp"
     const val SUBSCRIBER_ID = "subscriberId"

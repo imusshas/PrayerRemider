@@ -1,10 +1,12 @@
 package com.rezau_mehedi.prayerreminder.data
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
 import com.rezau_mehedi.prayerreminder.core.Constants.DIVISIONS
-import com.rezau_mehedi.prayerreminder.core.Constants.datastore
 import com.rezau_mehedi.prayerreminder.model.UserModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -12,9 +14,10 @@ import kotlinx.coroutines.flow.map
 class UserPrefImpl (private val context: Context) : UserPref {
 
     companion object {
-        val PHONE_NO = stringPreferencesKey("PHONE_NO")
-        val LOCATION = stringPreferencesKey("LOCATION")
-
+        private val PHONE_NO = stringPreferencesKey("PHONE_NO")
+        private val LOCATION = stringPreferencesKey("LOCATION")
+        private const val DATASTORE_NAME = "USER"
+        private val Context.datastore: DataStore<Preferences> by preferencesDataStore(name = DATASTORE_NAME)
     }
 
     override suspend fun saveUserModel(userModel: UserModel) {

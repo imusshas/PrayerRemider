@@ -194,7 +194,14 @@ class PreferenceViewModel @Inject constructor(
     }
 
     private fun signUp() = viewModelScope.launch {
-        val subscriberId = phoneNo.value
+        val phone = phoneNo.value
+        val subscriberId = if (phone[0] == '+' && phone[1] == '8' && phone[2] == '8') {
+            phone.substring(3)
+        } else if (phone[0] == '8' && phone[1] == '8') {
+            phone.substring(2)
+        } else {
+            phone
+        }
         Log.d(TAG, "requestOTP: number: $subscriberId")
         val response = bdAppsApiRepository.requestOTP(subscriberId = subscriberId)
 
@@ -228,7 +235,7 @@ class PreferenceViewModel @Inject constructor(
                     _navigateToHomeFromVerifyOTP.update { true }
                     _locationDialogState.update { true }
                 } else {
-                    _otpError.update { "Invalid OTP or Internet Connection" }
+                    _otpError.update { "Invalid OTP" }
                 }
             } else {
                 Log.d(TAG, "verifyOTP: error: ${verifyResponse.errorBody()}")

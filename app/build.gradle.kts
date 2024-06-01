@@ -69,7 +69,10 @@ dependencies {
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")// Prayer Time
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+
+    // Prayer Time
     implementation("com.batoulapps.adhan:adhan2:0.0.5")
 
     //DataStore
