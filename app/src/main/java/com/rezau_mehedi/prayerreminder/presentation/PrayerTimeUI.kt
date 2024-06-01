@@ -1,7 +1,5 @@
 package com.rezau_mehedi.prayerreminder.presentation
 
-import android.icu.util.IslamicCalendar
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -74,7 +72,6 @@ fun PrayerTimeUI(
     val dhuhrShift = dhuhr.substring(6, 8)
     val asrShift = asr.substring(6, 8)
     val maghribShift = maghrib.substring(6, 8)
-    val ishaShift = isha.substring(6, 8)
 
     var fajrHour = fajr.substring(0, 2).toInt()
     if (fajrHour < 12 && fajrShift == "PM") {
@@ -108,13 +105,6 @@ fun PrayerTimeUI(
     }
     val maghribMinute = maghrib.substring(3, 5).toInt()
 
-    var ishaHour = isha.substring(0, 2).toInt()
-    if (ishaHour < 12 && ishaShift == "PM") {
-        ishaHour += 12
-    } else if (ishaHour == 12 && ishaShift == "AM") {
-        ishaHour = 0
-    }
-    val ishaMinute = isha.substring(3, 5).toInt()
 
     var sunriseHour = sunrise.substring(0, 2).toInt()
     if (sunriseHour < 12 && sunriseShift == "PM") {
@@ -291,12 +281,12 @@ fun PrayerTimeUI(
 
         Button(
             onClick = {
-                viewModel.resetUser()
-                navigateToSignUpScreen()
+                viewModel.onPrayerTimeUIEvent(PrayerTimeUIEvent.LogOutButtonClicked)
+                    navigateToSignUpScreen()
             },
             shape = RoundedCornerShape(15)
         ) {
-            Text(text = "Reset")
+            Text(text = "Log Out")
         }
     }
 

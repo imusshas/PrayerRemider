@@ -7,8 +7,6 @@ import androidx.datastore.preferences.preferencesDataStore
 
 object Constants {
 
-    const val APP_NAME = "PrayerReminder"
-
     val DIVISIONS = listOf(
         "Dhaka", "Chattogram", "Khulna", "Rajshahi", "Sylhet", "Barishal", "Rangpur", "Mymensingh", ""
     )
@@ -24,4 +22,21 @@ object Constants {
     private const val DATASTORE_NAME = "USER"
 
     val Context.datastore: DataStore<Preferences> by preferencesDataStore(name = DATASTORE_NAME)
+
+    const val BASE_URL = "http://20.197.50.116:3000/"  // TODO(): Change the port no
+    const val REFERENCE_NO = "referenceNo"
+    const val OTP = "otp"
+    const val SUBSCRIBER_ID = "subscriberId"
 }
+
+
+
+
+
+
+
+
+
+
+
+

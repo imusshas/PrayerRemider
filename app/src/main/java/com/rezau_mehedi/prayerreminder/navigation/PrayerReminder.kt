@@ -6,6 +6,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.rezau_mehedi.prayerreminder.presentation.Login
 import com.rezau_mehedi.prayerreminder.presentation.PrayerTimeUI
 import com.rezau_mehedi.prayerreminder.presentation.PreferenceViewModel
 import com.rezau_mehedi.prayerreminder.presentation.SignUp
@@ -22,11 +23,31 @@ fun PrayerReminder(viewModel: PreferenceViewModel) {
     NavHost(
         navController = navController,
         startDestination = if (user.phoneNo.isEmpty()) {
-            Routes.SIGN_UP.name
+            Routes.LOGIN.name
         } else {
             Routes.PRAYER_TIME_UI.name
         }
     ) {
+
+        composable(route = Routes.LOGIN.name) {
+            Login(
+                viewModel = viewModel,
+                navigateToHomeScreen = {
+                    navigate(
+                        navController,
+                        Routes.LOGIN.name,
+                        Routes.PRAYER_TIME_UI.name
+                        )
+                },
+                navigateToSignUp = {
+                    navigate(
+                        navController,
+                        Routes.LOGIN.name,
+                        Routes.SIGN_UP.name
+                    )
+                }
+            )
+        }
 
         composable(
             route = Routes.SIGN_UP.name
@@ -38,6 +59,13 @@ fun PrayerReminder(viewModel: PreferenceViewModel) {
                         navController,
                         Routes.SIGN_UP.name,
                         Routes.VERIFY_OTP.name
+                    )
+                },
+                navigateToLogin = {
+                    navigate(
+                        navController,
+                        Routes.SIGN_UP.name,
+                        Routes.LOGIN.name
                     )
                 }
             )

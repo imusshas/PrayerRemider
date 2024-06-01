@@ -16,11 +16,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.rezau_mehedi.prayerreminder.model.SignUpUIEvent
 
 @Composable
@@ -30,8 +32,9 @@ fun VerifyOTP(
 ) {
 
     val otp = viewModel.otp.collectAsState().value
+    val otpError = viewModel.otpError.collectAsState().value
 
-    val navigationState = viewModel.navigationState.collectAsState().value
+    val navigationState = viewModel.navigateToHomeFromVerifyOTP.collectAsState().value
 
     Column(
         modifier = Modifier
@@ -66,17 +69,24 @@ fun VerifyOTP(
                     textAlign = TextAlign.Center
                 )
             },
-            textStyle = TextStyle(textAlign = TextAlign.Center)
+            textStyle = TextStyle(textAlign = TextAlign.Center),
+            isError = otpError == null
         )
+
+        if (otpError != null) {
+            Spacer(modifier = Modifier.height(2.dp))
+            Text(text = otpError, color = Color.Red, fontSize = 12.sp)
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
             onClick = {
-                viewModel.onSignUpUIEvent(SignUpUIEvent.SignUpButtonClicked)
+                viewModel.onSignUpUIEvent(SignUpUIEvent.VerifyOTPButtonClicked)
                 if (navigationState) {
                     navigateToPrayerTimeUI()
                 }
+                navigateToPrayerTimeUI()
             },
             shape = RoundedCornerShape(15)
         ) {

@@ -24,17 +24,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rezau_mehedi.prayerreminder.model.SignUpUIEvent
 
-
 @Composable
-fun SignUp(
+fun Login(
     viewModel: PreferenceViewModel,
-    navigateVerifyOTP: () -> Unit,
-    navigateToLogin: () -> Unit
+    navigateToHomeScreen: () -> Unit,
+    navigateToSignUp: () -> Unit
 ) {
-
     val phoneNo = viewModel.phoneNo.collectAsState().value
     val error = viewModel.error.collectAsState().value
-    val navigationState = viewModel.navigateToVerifyOTPFromSignUp.collectAsState().value
+    val navigationState = viewModel.navigateToHomeFromLogin.collectAsState().value
 
     Column(
         modifier = Modifier
@@ -44,12 +42,23 @@ fun SignUp(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Column(modifier = Modifier.fillMaxWidth().weight(1f), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
             Text(text = "Prayer Reminder", fontWeight = FontWeight.Thin, fontSize = 32.sp)
         }
 
 
-        Column(modifier = Modifier.fillMaxWidth().weight(2f), horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(2f),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             OutlinedTextField(
                 value = phoneNo,
                 onValueChange = { phone ->
@@ -71,27 +80,29 @@ fun SignUp(
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(text = error, color = Color.Red, fontSize = 12.sp)
             }
+
             Spacer(modifier = Modifier.height(24.dp))
+
             Button(
                 onClick = {
-                    viewModel.onSignUpUIEvent(SignUpUIEvent.SignUpButtonClicked)
+                    viewModel.onSignUpUIEvent(SignUpUIEvent.LoginButtonClicked)
                     if (navigationState) {
-                        navigateVerifyOTP()
+                        navigateToHomeScreen()
                     }
                 },
                 shape = RoundedCornerShape(15)
             ) {
-                Text(text = "Sign Up")
+                Text(text = "Login")
             }
 
             Spacer(modifier = Modifier.height(48.dp))
-            Text(text = "Already a User?")
+            Text(text = "Not a User?")
             Spacer(modifier = Modifier.height(4.dp))
             Button(onClick = {
                 viewModel.onSignUpUIEvent(SignUpUIEvent.SignUpButtonClickedFromLogin)
-                navigateToLogin()
+                navigateToSignUp()
             }, shape = RoundedCornerShape(15)) {
-                Text(text = "Login")
+                Text(text = "Sign Up")
             }
         }
     }
