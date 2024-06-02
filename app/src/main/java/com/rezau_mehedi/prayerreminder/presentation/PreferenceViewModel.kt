@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -56,8 +57,6 @@ class PreferenceViewModel @Inject constructor(
         SharingStarted.WhileSubscribed(),
         UserModel()
     )
-
-
 
 
     private val _navigateToHomeFromLogin = MutableStateFlow(false)
@@ -175,21 +174,22 @@ class PreferenceViewModel @Inject constructor(
     private fun login() = viewModelScope.launch {
         val subscriberId = phoneNo.value
         Log.d(TAG, "requestOTP: number: $subscriberId")
-        val response = bdAppsApiRepository.requestOTP(subscriberId = subscriberId)
+        bdAppsApiRepository.requestOTP(subscriberId = subscriberId).collectLatest {
+            val response = it
+            if (response.isSuccessful) {
+                _requestOTPResponse.value = response.body()
+                Log.d(TAG, "requestOTP: ${response.body()}")
+                if (requestOTPResponse.value?.statusDetail == "Success") {
+                    _error.update { "User is not Registered" }
+                } else if (requestOTPResponse.value?.statusDetail == "user already registered") {
+                    _navigateToHomeFromLogin.update { true }
+                    _locationDialogState.update { true }
+                    saveUser(UserModel(phoneNo = phoneNo.value))
 
-        if (response.isSuccessful) {
-            _requestOTPResponse.value = response.body()
-            Log.d(TAG, "requestOTP: ${response.body()}")
-            if (requestOTPResponse.value?.statusDetail == "Success") {
-                _error.update { "User is not Registered" }
-            }else if (requestOTPResponse.value?.statusDetail == "user already registered") {
-                _navigateToHomeFromLogin.update { true }
-                _locationDialogState.update { true }
-                saveUser(UserModel(phoneNo = phoneNo.value))
-
+                }
+            } else {
+                Log.d(TAG, "requestOTP: error: ${response.errorBody()}")
             }
-        } else {
-            Log.d(TAG, "requestOTP: error: ${response.errorBody()}")
         }
     }
 
@@ -203,46 +203,50 @@ class PreferenceViewModel @Inject constructor(
             phone
         }
         Log.d(TAG, "requestOTP: number: $subscriberId")
-        val response = bdAppsApiRepository.requestOTP(subscriberId = subscriberId)
-
-        if (response.isSuccessful) {
-            _requestOTPResponse.value = response.body()
-            Log.d(TAG, "requestOTP: ${response.body()}")
-            if (requestOTPResponse.value?.statusDetail == "Success") {
-                _navigateToVerifyOTPFromSignUp.update { true }
-            }else if (requestOTPResponse.value?.statusDetail == "user already registered") {
-                _error.update { "User is Already Registered" }
+        bdAppsApiRepository.requestOTP(subscriberId = subscriberId).collectLatest {
+            val response = it
+            if (response.isSuccessful) {
+                _requestOTPResponse.value = response.body()
+                Log.d(TAG, "requestOTP: ${response.body()}")
+                if (requestOTPResponse.value?.statusDetail == "Success") {
+                    _navigateToVerifyOTPFromSignUp.update { true }
+                } else if (requestOTPResponse.value?.statusDetail == "user already registered") {
+                    _error.update { "User is Already Registered" }
+                }
+            } else {
+                Log.d(TAG, "requestOTP: error: ${response.errorBody()}")
             }
-        } else {
-            Log.d(TAG, "requestOTP: error: ${response.errorBody()}")
         }
+
 
     }
 
 
     private fun verifyOTP() = viewModelScope.launch {
-        requestOTPResponse.value?.let {response ->
+        requestOTPResponse.value?.let { response ->
 
-            val verifyResponse = bdAppsApiRepository.verifyOTP(
+            bdAppsApiRepository.verifyOTP(
                 referenceNo = response.referenceNo,
                 otp = otp.value
-            )
-
-            if (verifyResponse.isSuccessful) {
-                _verifyOTPResponse.value = verifyResponse.body()
-                if (verifyOTPResponse.value?.statusDetail == "Success") {
-                    saveUser(UserModel(phoneNo = phoneNo.value, location = location.value))
-                    _navigateToHomeFromVerifyOTP.update { true }
-                    _locationDialogState.update { true }
+            ).collectLatest {
+                val verifyResponse = it
+                if (verifyResponse.isSuccessful) {
+                    _verifyOTPResponse.value = verifyResponse.body()
+                    if (verifyOTPResponse.value?.statusDetail == "Success") {
+                        saveUser(UserModel(phoneNo = phoneNo.value, location = location.value))
+                        _navigateToHomeFromVerifyOTP.update { true }
+                        _locationDialogState.update { true }
+                    } else {
+                        _otpError.update { "Invalid OTP" }
+                    }
                 } else {
-                    _otpError.update { "Invalid OTP" }
+                    Log.d(TAG, "verifyOTP: error: ${verifyResponse.errorBody()}")
                 }
-            } else {
-                Log.d(TAG, "verifyOTP: error: ${verifyResponse.errorBody()}")
             }
+
+
         }
     }
-
 
 
     private fun logOut() = viewModelScope.launch {
@@ -263,6 +267,7 @@ class PreferenceViewModel @Inject constructor(
         _navigateToHomeFromVerifyOTP.value = false
         _locationDialogState.value = false
     }
+
     companion object {
         const val TAG = "PreferenceViewModel"
     }

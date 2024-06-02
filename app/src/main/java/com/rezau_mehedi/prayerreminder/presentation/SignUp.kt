@@ -72,6 +72,12 @@ fun SignUp(
                 Text(text = error, color = Color.Red, fontSize = 12.sp)
             }
             Spacer(modifier = Modifier.height(24.dp))
+
+
+
+
+
+
             Button(
                 onClick = {
                     viewModel.onSignUpUIEvent(SignUpUIEvent.SignUpButtonClicked)
@@ -83,6 +89,10 @@ fun SignUp(
             ) {
                 Text(text = "Sign Up")
             }
+
+
+
+
 
             Spacer(modifier = Modifier.height(48.dp))
             Text(text = "Already a User?")

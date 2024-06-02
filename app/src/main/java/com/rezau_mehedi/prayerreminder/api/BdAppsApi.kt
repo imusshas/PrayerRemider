@@ -1,8 +1,5 @@
 package com.rezau_mehedi.prayerreminder.api
 
-import com.rezau_mehedi.prayerreminder.core.Constants.OTP
-import com.rezau_mehedi.prayerreminder.core.Constants.REFERENCE_NO
-import com.rezau_mehedi.prayerreminder.core.Constants.SUBSCRIBER_ID
 import com.rezau_mehedi.prayerreminder.model.api_response.RequestOTPResponse
 import com.rezau_mehedi.prayerreminder.model.api_response.VerifyOTPResponse
 import retrofit2.Response
@@ -26,5 +23,9 @@ interface BdAppsApi {
     companion object {
         private const val REQUEST_OTP_END_POINT = "request_otp"
         private const val VERIFY_OTP_END_POINT = "verify_otp"
+
+        private const val REFERENCE_NO = "referenceNo"
+        private const val OTP = "otp"
+        private const val SUBSCRIBER_ID = "subscriberId"
     }
 }

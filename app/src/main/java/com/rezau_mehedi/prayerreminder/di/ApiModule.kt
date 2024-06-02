@@ -1,7 +1,6 @@
 package com.rezau_mehedi.prayerreminder.di
 
 import com.rezau_mehedi.prayerreminder.api.BdAppsApi
-import com.rezau_mehedi.prayerreminder.core.Constants.BASE_URL
 import com.rezau_mehedi.prayerreminder.data.BdAppsApiRepository
 import com.rezau_mehedi.prayerreminder.data.BdAppsApiRepositoryImpl
 import dagger.Module
@@ -27,4 +26,6 @@ object ApiModule {
     @Singleton
     @Provides
     fun providesBdPassApiRepository(api: BdAppsApi): BdAppsApiRepository = BdAppsApiRepositoryImpl(api)
+
+    private const val BASE_URL = "http://20.197.50.116:3000/"
 }
