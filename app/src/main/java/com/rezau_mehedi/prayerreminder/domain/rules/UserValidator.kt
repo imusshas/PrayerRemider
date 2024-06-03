@@ -1,4 +1,4 @@
-package com.rezau_mehedi.prayerreminder.model
+package com.rezau_mehedi.prayerreminder.domain.rules
 
 import android.util.Log
 

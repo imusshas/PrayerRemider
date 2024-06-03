@@ -1,8 +1,8 @@
 package com.rezau_mehedi.prayerreminder.di
 
 import com.rezau_mehedi.prayerreminder.api.BdAppsApi
-import com.rezau_mehedi.prayerreminder.data.BdAppsApiRepository
-import com.rezau_mehedi.prayerreminder.data.BdAppsApiRepositoryImpl
+import com.rezau_mehedi.prayerreminder.domain.repository.BdAppsApiRepository
+import com.rezau_mehedi.prayerreminder.data.repository.BdAppsApiRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

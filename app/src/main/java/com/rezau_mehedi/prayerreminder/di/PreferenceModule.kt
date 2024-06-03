@@ -1,8 +1,8 @@
 package com.rezau_mehedi.prayerreminder.di
 
 import android.content.Context
-import com.rezau_mehedi.prayerreminder.data.UserPref
-import com.rezau_mehedi.prayerreminder.data.UserPrefImpl
+import com.rezau_mehedi.prayerreminder.domain.repository.UserPref
+import com.rezau_mehedi.prayerreminder.data.repository.UserPrefImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

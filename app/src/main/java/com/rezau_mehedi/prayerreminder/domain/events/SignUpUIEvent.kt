@@ -1,4 +1,4 @@
-package com.rezau_mehedi.prayerreminder.model
+package com.rezau_mehedi.prayerreminder.domain.events
 
 sealed interface SignUpUIEvent {
     data class PhoneNoChanged(val phoneNo: String): SignUpUIEvent

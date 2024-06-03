@@ -1,7 +1,7 @@
-package com.rezau_mehedi.prayerreminder.data
+package com.rezau_mehedi.prayerreminder.domain.repository
 
-import com.rezau_mehedi.prayerreminder.model.api_response.RequestOTPResponse
-import com.rezau_mehedi.prayerreminder.model.api_response.VerifyOTPResponse
+import com.rezau_mehedi.prayerreminder.data.model.api_response.RequestOTPResponse
+import com.rezau_mehedi.prayerreminder.data.model.api_response.VerifyOTPResponse
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 

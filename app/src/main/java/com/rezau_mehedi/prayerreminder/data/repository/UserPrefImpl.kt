@@ -1,4 +1,4 @@
-package com.rezau_mehedi.prayerreminder.data
+package com.rezau_mehedi.prayerreminder.data.repository
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -7,7 +7,8 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.rezau_mehedi.prayerreminder.core.Constants.DIVISIONS
-import com.rezau_mehedi.prayerreminder.model.UserModel
+import com.rezau_mehedi.prayerreminder.data.model.UserModel
+import com.rezau_mehedi.prayerreminder.domain.repository.UserPref
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

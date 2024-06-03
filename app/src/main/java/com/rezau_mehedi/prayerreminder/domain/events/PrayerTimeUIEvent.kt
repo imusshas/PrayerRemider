@@ -1,4 +1,4 @@
-package com.rezau_mehedi.prayerreminder.model
+package com.rezau_mehedi.prayerreminder.domain.events
 
 sealed interface PrayerTimeUIEvent {
     data class LocationChanged(val location: String): PrayerTimeUIEvent

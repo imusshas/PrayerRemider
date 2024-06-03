@@ -1,4 +1,4 @@
-package com.rezau_mehedi.prayerreminder.model.api_response
+package com.rezau_mehedi.prayerreminder.data.model.api_response
 
 data class VerifyOTPResponse(
     val statusCode: String,

@@ -1,8 +1,10 @@
 package com.rezau_mehedi.prayerreminder.presentation
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,6 +19,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
@@ -25,8 +28,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -37,8 +44,9 @@ import com.batoulapps.adhan2.Coordinates
 import com.batoulapps.adhan2.Madhab
 import com.batoulapps.adhan2.PrayerTimes
 import com.batoulapps.adhan2.data.DateComponents
+import com.rezau_mehedi.prayerreminder.R
 import com.rezau_mehedi.prayerreminder.core.Constants
-import com.rezau_mehedi.prayerreminder.model.PrayerTimeUIEvent
+import com.rezau_mehedi.prayerreminder.domain.events.PrayerTimeUIEvent
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -190,93 +198,16 @@ fun PrayerTimeUI(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             // Fajr
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(64.dp),
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(text = "Fajr", fontSize = 24.sp)
-                    Text(text = fajr, fontSize = 24.sp)
-                }
-            }
+            PrayerTimeCard(prayerName = "Fajr", prayerTime = fajr, selected = now == "Fajr")
             // Dhuhr
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(64.dp),
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(text = "Dhuhr", fontSize = 24.sp)
-                    Text(text = dhuhr, fontSize = 24.sp)
-                }
-            }
-
+            PrayerTimeCard(prayerName = "Dhuhr", prayerTime = dhuhr, selected = now == "Dhuhr")
             // Asr
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(64.dp),
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(text = "Asr", fontSize = 24.sp)
-                    Text(text = asr, fontSize = 24.sp)
-                }
-            }
-
+            PrayerTimeCard(prayerName = "Asr", prayerTime = asr, selected = now == "Asr")
             // Maghrib
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(64.dp),
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(text = "Maghrib", fontSize = 24.sp)
-                    Text(text = maghrib, fontSize = 24.sp)
-                }
-            }
-
+            PrayerTimeCard(prayerName = "Maghrib", prayerTime = maghrib, selected = now == "Maghrib")
             // Isha
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(64.dp),
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(text = "Isha", fontSize = 24.sp)
-                    Text(text = isha, fontSize = 24.sp)
-                }
-            }
+            PrayerTimeCard(prayerName = "Isha", prayerTime = isha, selected = now == "Isha")
+
         }
 
         Button(
@@ -419,80 +350,123 @@ private fun TopCard(
         modifier = Modifier
             .fillMaxWidth()
             .height(200.dp),
-        shape = RoundedCornerShape(10)
+        shape = RoundedCornerShape(10),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = Color.Black
+        )
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
+        Box(modifier = Modifier.fillMaxSize().alpha(1f)
         ) {
-            Column(
+            Image(
+                painter = painterResource(id = R.drawable.mosque_background),
+                contentDescription = "Mosque background",
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop
+            )
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(0.8f),
+                    .padding(16.dp)
             ) {
-                Text(
-                    text = "${weekDay[0].uppercase()}${weekDay.substring(1)}, ${today.dayOfMonth} ${month[0].uppercase()}${
-                        month.substring(1)
-                    }",
-                    fontSize = 14.sp
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Next", fontSize = 12.sp)
-                Text(text = next, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(0.8f),
                 ) {
-                    Text(text = nextTime, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
-                    Text(text = nextShift, modifier = Modifier.padding(top = 10.dp))
-                }
-
-                Spacer(modifier = Modifier.height(8.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    Text(text = "Now:")
-                    Text(text = now, fontWeight = FontWeight.SemiBold)
-                }
-
-
-            }
-
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Top
-            ) {
-                Text(text = "Time Now", fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(text = "$hour:$minute", fontSize = 64.sp, fontWeight = FontWeight.Bold)
-                    Text(text = amOrPm, modifier = Modifier.padding(top = 10.dp))
-                }
-                Spacer(modifier = Modifier.height(8.dp))
-                Row(
-                    modifier = Modifier.clickable { locationDialogStateChange() },
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.LocationOn,
-                        contentDescription = "Location",
-                        modifier = Modifier
-                            .size(36.dp),
+                    Text(
+                        text = "${weekDay[0].uppercase()}${weekDay.substring(1)}, ${today.dayOfMonth} ${month[0].uppercase()}${
+                            month.substring(1)
+                        }",
+                        fontSize = 14.sp
                     )
-                    Text(text = location, fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(text = "Next", fontSize = 12.sp)
+                    Text(text = next, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        Text(text = nextTime, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
+                        Text(text = nextShift, modifier = Modifier.padding(top = 10.dp))
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        Text(text = "Now:")
+                        Text(text = now, fontWeight = FontWeight.SemiBold)
+                    }
+
+
+                }
+
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Top
+                ) {
+                    Text(text = "Time Now", fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(text = "$hour:$minute", fontSize = 64.sp, fontWeight = FontWeight.Bold)
+                        Text(text = amOrPm, modifier = Modifier.padding(top = 10.dp))
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        modifier = Modifier.clickable { locationDialogStateChange() },
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.LocationOn,
+                            contentDescription = "Location",
+                            modifier = Modifier
+                                .size(36.dp),
+                            tint = Color.Red
+                        )
+                        Text(text = location, fontSize = 20.sp, color = Color.Red)
+                    }
                 }
             }
         }
+
     }
 
 
+}
+
+
+@Composable
+fun PrayerTimeCard(
+    prayerName: String,
+    prayerTime: String,
+    selected: Boolean
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(64.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = if (selected) MaterialTheme.colorScheme.primary else Color(0xFFf2f5eb)
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = prayerName, fontSize = 24.sp)
+            Text(text = prayerTime, fontSize = 24.sp)
+        }
+    }
 }

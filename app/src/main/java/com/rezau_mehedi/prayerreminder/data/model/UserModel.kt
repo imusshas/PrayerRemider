@@ -1,4 +1,4 @@
-package com.rezau_mehedi.prayerreminder.model
+package com.rezau_mehedi.prayerreminder.data.model
 
 import com.rezau_mehedi.prayerreminder.core.Constants.DIVISIONS
 

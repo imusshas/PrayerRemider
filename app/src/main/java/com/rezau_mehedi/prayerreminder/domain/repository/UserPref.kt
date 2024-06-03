@@ -1,6 +1,6 @@
-package com.rezau_mehedi.prayerreminder.data
+package com.rezau_mehedi.prayerreminder.domain.repository
 
-import com.rezau_mehedi.prayerreminder.model.UserModel
+import com.rezau_mehedi.prayerreminder.data.model.UserModel
 import kotlinx.coroutines.flow.Flow
 
 interface UserPref {

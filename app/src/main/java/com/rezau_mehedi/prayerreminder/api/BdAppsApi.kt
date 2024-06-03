@@ -1,7 +1,7 @@
 package com.rezau_mehedi.prayerreminder.api
 
-import com.rezau_mehedi.prayerreminder.model.api_response.RequestOTPResponse
-import com.rezau_mehedi.prayerreminder.model.api_response.VerifyOTPResponse
+import com.rezau_mehedi.prayerreminder.data.model.api_response.RequestOTPResponse
+import com.rezau_mehedi.prayerreminder.data.model.api_response.VerifyOTPResponse
 import retrofit2.Response
 import retrofit2.http.POST
 import retrofit2.http.Query

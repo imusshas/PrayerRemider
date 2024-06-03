@@ -4,15 +4,15 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rezau_mehedi.prayerreminder.core.Constants.DIVISIONS
-import com.rezau_mehedi.prayerreminder.data.BdAppsApiRepository
-import com.rezau_mehedi.prayerreminder.data.UserPref
-import com.rezau_mehedi.prayerreminder.model.PrayerTimeUIEvent
+import com.rezau_mehedi.prayerreminder.domain.repository.BdAppsApiRepository
+import com.rezau_mehedi.prayerreminder.domain.repository.UserPref
+import com.rezau_mehedi.prayerreminder.domain.events.PrayerTimeUIEvent
 
-import com.rezau_mehedi.prayerreminder.model.SignUpUIEvent
-import com.rezau_mehedi.prayerreminder.model.UserModel
-import com.rezau_mehedi.prayerreminder.model.UserValidator
-import com.rezau_mehedi.prayerreminder.model.api_response.RequestOTPResponse
-import com.rezau_mehedi.prayerreminder.model.api_response.VerifyOTPResponse
+import com.rezau_mehedi.prayerreminder.domain.events.SignUpUIEvent
+import com.rezau_mehedi.prayerreminder.data.model.UserModel
+import com.rezau_mehedi.prayerreminder.domain.rules.UserValidator
+import com.rezau_mehedi.prayerreminder.data.model.api_response.RequestOTPResponse
+import com.rezau_mehedi.prayerreminder.data.model.api_response.VerifyOTPResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
