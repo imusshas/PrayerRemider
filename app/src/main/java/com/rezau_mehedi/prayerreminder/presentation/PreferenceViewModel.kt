@@ -208,7 +208,7 @@ class PreferenceViewModel @Inject constructor(
             if (response.isSuccessful) {
                 _requestOTPResponse.value = response.body()
                 Log.d(TAG, "requestOTP: ${response.body()}")
-                if (requestOTPResponse.value?.statusDetail == "Success") {
+                if (requestOTPResponse.value?.statusCode == "S1000") {
                     _navigateToVerifyOTPFromSignUp.update { true }
                 } else if (requestOTPResponse.value?.statusDetail == "user already registered") {
                     _error.update { "User is Already Registered" }
@@ -232,7 +232,7 @@ class PreferenceViewModel @Inject constructor(
                 val verifyResponse = it
                 if (verifyResponse.isSuccessful) {
                     _verifyOTPResponse.value = verifyResponse.body()
-                    if (verifyOTPResponse.value?.statusDetail == "Success") {
+                    if (verifyOTPResponse.value?.statusCode == "S1000") {
                         saveUser(UserModel(phoneNo = phoneNo.value, location = location.value))
                         _navigateToHomeFromVerifyOTP.update { true }
                         _locationDialogState.update { true }
