@@ -30,7 +30,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -197,10 +196,11 @@ fun PrayerTimeUI(
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            val dhuhrOrJumma = if (LocalDateTime.now().dayOfWeek.name.uppercase() == "FRIDAY") "Jumma" else "Dhuhr"
             // Fajr
             PrayerTimeCard(prayerName = "Fajr", prayerTime = fajr, selected = now == "Fajr")
             // Dhuhr
-            PrayerTimeCard(prayerName = "Dhuhr", prayerTime = dhuhr, selected = now == "Dhuhr")
+            PrayerTimeCard(prayerName = dhuhrOrJumma, prayerTime = dhuhr, selected = now == "Dhuhr")
             // Asr
             PrayerTimeCard(prayerName = "Asr", prayerTime = asr, selected = now == "Asr")
             // Maghrib
